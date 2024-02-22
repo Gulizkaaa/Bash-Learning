@@ -1,0 +1,13 @@
+check if we have a git by using command <which git>
+If we do not have it we need to install git, and if we do continue 
+check if we are in a git repository
+if we are: 
+    check if # of args are 0:
+    promt for path to push
+    promt for commit message
+    if #of arg are 2:
+    use first arg as a PATH 
+     the second as a commit message
+    if #of args are 1:
+     use first argument as commit message 
+     

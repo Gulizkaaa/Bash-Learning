@@ -2,7 +2,7 @@
 
 # for item in [LIST]; do
 # commands 
-# done - this is the syntapfpr the loop
+# done - this is the syntax for the loop
 
 # for user in $(cat /etc/passwd | awk -F ":" '{print $1}'); do
 #  mkdir users/$user #creating folder with user name
