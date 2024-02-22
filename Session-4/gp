@@ -1,51 +1,54 @@
 #!/bin/bash
 
 function _gitPush {
-    if [ $# == 0 ]; then
-        read -p "provide path to commit: " path
-        read -p "provide commit message: " message
-        git add $path
-        git commit -m "$message"
-        git push
-    elif [ $? == 1 ]; then
+    if [ $# == 0 ]; then #if there is no argument is given then promt and ask
+        read -p "provide path to commit: " path #first argument to give a path 
+        read -p "provide commit message: " message #second argument to give a message
+        git add $path #using git add and given path to add all unupdated folders and files
+        git commit -m "$message" #takes the message that user input, and uses it as a commit message
+        git push #finally, we are pushing our repo to the github
+    elif [ $# == 1 ]; then #if there is only 1 arg is given take it as a commit message 
         git add .
-        git commit -m "$1"
+        git commit -m "$1" #here using given arg as a commit message
         git push
-    elif [ $? == 2 ]; then
-        git add $1
-        git commit -m "$2"
+    elif [ $# == 2 ]; then #if there are 2 arguments given 
+        git add $1 #take first arg as a path here 
+        git commit -m "$2" #take second argument as a commit message
         git push
     fi  
 }
 
-which git 2> /dev/null && clear
-if [ $? != 0 ]; then
-    echo "Installing git...."
-    yum install git -y 1> /dev/null
-fi 
+which git 2> /dev/null && clear # we need to check whether we do have git in our machine, if not we need to install
+if [ $? != 0 ]; then ## if i do not have git I am installing it here
+    echo "Installing git...." #in order to know that it is installing we are echoing it
+    yum install git -y 1> /dev/null #here we are installing the git by using yum package manager, and the output we are throwing to the dev/null so there is no ugly messages 
+fi  # however, if i do have a git, then we are moving on 
 
-git status 2> /dev/null && clear
-if [ $? == 0 ]; then
-    _gitPush
-else
+git status 2> /dev/null && clear #after we are checking are we in the required repo or not
+if [ $? == 0 ]; then ##in order to push a required repo, we need to be there 
+    _gitPush #if we are in a repo that we need to push then we can proceed by using the _gitPush function
+else #otherwise, we ask computer to echo that repo is not found and we need to change our directory
     echo "repository not detected"
-    read -p "enter repo name: " repo
-    resultCount=$(find / name $repo | wc -l)
-    if [ $resultCount -gt 1 ]; then
-        echo "found more then 1 repo with name: $repo:"
-        for result in $(find / -name $repo 2> /dev/null); do
-            read -p "Is this your repo? -> $result <- [y/n]" x
-            if [ $x != 'y' ]; then
+    read -p "enter repo name: " repo #it takes the name of repo that we need to be insdide and push to github
+    resultCount=$(find / name $repo | wc -l) #1) we are setting a variable resultcount,that uses command find(will search our repo by given name that we input when it prompted) and wc -l (just incase if we have more than 1 result, it will tell us how many lines are there).
+    if [ $resultCount -gt 1 ]; then #and if there more than 1 repo with the same name,
+        echo "found more then 1 repo with name: $repo:" # it will echo and tell us that system found more repos with the same name
+        for result in $(find / -name $repo 2> /dev/null); do #here we are using for loop to go through each repo, 
+            read -p "Is this your repo? -> $result <- [y/n]" x #promt and ask whether found result is our repo, or not
+            if [ $x != 'y' ]; then #if it is not our repo then we are skipping it and continue searching
                 echo "skipping..."
-            else
-                cd $result
-                _gitPush
-                break
-            fi
+            else             #if it is our repo then
+                cd $result    #we need to change our directory to that one, in other words, we are going to that specific folder that needs to be pushed to GitHub
+                _gitPush #here again we using the _gitPush function to push our repo
+                break  #break is the same as exit, however, exit may stop the whole script, while break will stop only the for loop
+            fi   # that is it, we should double check all if and fi, whether the syntax was used properly or not
         done
     else
-    cd $repo_path
-    _gitPush
+    cd $repo_path #if there was only 1 result, which means there is no other repo with the same name 
+    _gitPush #we use _gitPush function and push our repo to the GitHub 
     fi
 fi
 
+#before running this script make sure that updated copy of this script also in the /root/bin
+#it may be done by command below,
+#cp Session-4/gp /root/bin/
