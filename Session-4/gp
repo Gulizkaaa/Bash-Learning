@@ -20,7 +20,7 @@ function _gitPush {
 
 which git 2> /dev/null && clear
 if [ $? != 0 ]; then
-echo "Installing git...."
+    echo "Installing git...."
     yum install git -y 1> /dev/null
 fi 
 
