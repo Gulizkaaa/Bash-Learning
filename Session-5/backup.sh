@@ -21,3 +21,4 @@ rm -rf $old_backups
 # for old in $old_backups; do
 # rm -rf $old
 # done 
+#just to test the script 
