@@ -36,7 +36,7 @@
 # using modulus % 
 
 
-for number in {1..100}; #we need a number that is in the range os 1 to 100
+for number in {1..100}; #we need a number that is in the range oа 1 to 100
 do
    if [ $(($number % 2)) -eq 0 ] #here we are asking system to take that number within this range (1..100), and divide it by 2 to find the even number, thus we use modulus %, and the result of the division there is no decimal consider number as even.
    then  #then print all these numbers within the range of 1..100
